@@ -6,7 +6,7 @@
     <VersionPrefix Condition="$(packageversion) != ''">$(packageversion)</VersionPrefix>
     <VersionPrefix Condition="$(packageversion) == ''">0.1.0-alpha1</VersionPrefix>
     <Authors>Scott Williams and contributors</Authors>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>SixLabors.Shapes.Text</AssemblyName>
@@ -34,11 +34,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SixLabors.Fonts" Version="0.1.0-alpha0016" />
+    <ProjectReference Include="..\SixLabors.Shapes\SixLabors.Shapes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SixLabors.Shapes\SixLabors.Shapes.csproj" />
+    <Reference Include="SixLabors.Core">
+      <HintPath>..\..\..\Core\src\SixLabors.Core\bin\Debug\netstandard2.0\SixLabors.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts">
+      <HintPath>..\..\..\Fonts\src\SixLabors.Fonts\bin\Debug\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
