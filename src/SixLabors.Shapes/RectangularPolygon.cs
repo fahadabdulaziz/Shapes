@@ -12,7 +12,7 @@ namespace SixLabors.Shapes
     /// A way of optimizing drawing rectangles.
     /// </summary>
     /// <seealso cref="SixLabors.Shapes.IPath" />
-    public class RectangularePolygon : IPath, ISimplePath
+    public class RectangularPolygon : IPath, ISimplePath
     {
         private readonly Vector2 topLeft;
         private readonly Vector2 bottomRight;
@@ -22,23 +22,23 @@ namespace SixLabors.Shapes
         private readonly RectangleF bounds;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangularePolygon" /> class.
+        /// Initializes a new instance of the <see cref="RectangularPolygon" /> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public RectangularePolygon(float x, float y, float width, float height)
+        public RectangularPolygon(float x, float y, float width, float height)
             : this(new PointF(x, y), new SizeF(width, height))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangularePolygon" /> class.
+        /// Initializes a new instance of the <see cref="RectangularPolygon" /> class.
         /// </summary>
         /// <param name="topLeft">The top left.</param>
         /// <param name="bottomRight">The bottom right.</param>
-        public RectangularePolygon(PointF topLeft, PointF bottomRight)
+        public RectangularPolygon(PointF topLeft, PointF bottomRight)
         {
             this.Location = topLeft;
             this.topLeft = topLeft;
@@ -59,20 +59,20 @@ namespace SixLabors.Shapes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangularePolygon"/> class.
+        /// Initializes a new instance of the <see cref="RectangularPolygon"/> class.
         /// </summary>
         /// <param name="location">The location.</param>
         /// <param name="size">The size.</param>
-        public RectangularePolygon(PointF location, SizeF size)
+        public RectangularPolygon(PointF location, SizeF size)
             : this(location, location + size)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangularePolygon"/> class.
+        /// Initializes a new instance of the <see cref="RectangularPolygon"/> class.
         /// </summary>
         /// <param name="rectangle">The rectangle.</param>
-        public RectangularePolygon(RectangleF rectangle)
+        public RectangularPolygon(RectangleF rectangle)
             : this(rectangle.Location, rectangle.Location + rectangle.Size)
         {
         }
@@ -200,8 +200,17 @@ namespace SixLabors.Shapes
         public PointF Center => (this.topLeft + this.bottomRight) / 2;
 
         /// <summary>
+        /// Converts the polygon to a rectangular polygon from its bounds.
+        /// </summary>
+        /// <param name="polygon">The polygon to convert.</param>
+        public static explicit operator RectangularPolygon(Polygon polygon)
+        {
+            return new RectangularPolygon(polygon.Bounds.X, polygon.Bounds.Y, polygon.Bounds.Width, polygon.Bounds.Height);
+        }
+
+        /// <summary>
         /// Determines if the specified point is contained within the rectangular region defined by
-        /// this <see cref="RectangularePolygon" />.
+        /// this <see cref="RectangularPolygon" />.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>
@@ -214,7 +223,7 @@ namespace SixLabors.Shapes
 
         /// <summary>
         /// Based on a line described by <paramref name="start"/> and <paramref name="end"/>
-        /// populate a buffer for all points on the edges of the <see cref="RectangularePolygon"/>
+        /// populate a buffer for all points on the edges of the <see cref="RectangularPolygon"/>
         /// that the line intersects.
         /// </summary>
         /// <param name="start">The start point of the line.</param>
@@ -445,6 +454,40 @@ namespace SixLabors.Shapes
         IPath IPath.AsClosedPath()
         {
             return this;
+        }
+
+        /// <summary>
+        /// Equality comparer for two RectangularPolygons
+        /// </summary>
+        /// <param name="obj">The polygon to compare to.</param>
+        /// <returns>Returns a value indicating if the rectangles are equal.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            var otherRectangle = (RectangularPolygon)obj;
+
+            return this.X == otherRectangle.X &&
+                this.Y == otherRectangle.Y &&
+                this.Height == otherRectangle.Height &&
+                this.Width == otherRectangle.Width;
+        }
+
+        /// <summary>
+        ///     Serves as the default hash function.
+        /// </summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -1073544145;
+            hashCode = (hashCode * -1521134295) + this.X.GetHashCode();
+            hashCode = (hashCode * -1521134295) + this.Y.GetHashCode();
+            hashCode = (hashCode * -1521134295) + this.Width.GetHashCode();
+            hashCode = (hashCode * -1521134295) + this.Height.GetHashCode();
+            return hashCode;
         }
     }
 }

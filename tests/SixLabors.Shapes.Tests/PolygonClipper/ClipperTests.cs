@@ -18,11 +18,11 @@ namespace SixLabors.Shapes.Tests.PolygonClipper
 
     public class ClipperTests
     {
-        private RectangularePolygon BigSquare = new RectangularePolygon(10, 10, 40, 40);
-        private RectangularePolygon Hole = new RectangularePolygon(20, 20, 10, 10);
-        private RectangularePolygon TopLeft = new RectangularePolygon(0, 0, 20, 20);
-        private RectangularePolygon TopRight = new RectangularePolygon(30, 0, 20, 20);
-        private RectangularePolygon TopMiddle = new RectangularePolygon(20, 0, 10, 20);
+        private RectangularPolygon BigSquare = new RectangularPolygon(10, 10, 40, 40);
+        private RectangularPolygon Hole = new RectangularPolygon(20, 20, 10, 10);
+        private RectangularPolygon TopLeft = new RectangularPolygon(0, 0, 20, 20);
+        private RectangularPolygon TopRight = new RectangularPolygon(30, 0, 20, 20);
+        private RectangularPolygon TopMiddle = new RectangularPolygon(20, 0, 10, 20);
 
         private Polygon BigTriangle = new Polygon(new LinearLineSegment(
                          new Vector2(10, 10),
@@ -51,6 +51,25 @@ namespace SixLabors.Shapes.Tests.PolygonClipper
         }
 
         [Fact]
+        public void OverlappingTriangleCutRightSide()
+        {
+            var triangle = new Polygon(new LinearLineSegment(
+                new Vector2(0, 50),
+                new Vector2(70, 0),
+                new Vector2(50, 100)));
+
+            var cutout = new Polygon(new LinearLineSegment(
+                new Vector2(20, 0),
+                new Vector2(70, 0),
+                new Vector2(70, 100),
+                new Vector2(20, 100)));
+
+            var shapes = this.Clip(triangle, cutout);
+            Assert.Equal(1, shapes.Count());
+            Assert.DoesNotContain(triangle, shapes);
+        }
+
+        [Fact]
         public void OverlappingTriangles()
         {
             var shapes = this.Clip(this.BigTriangle, this.LittleTriangle);
@@ -66,9 +85,12 @@ namespace SixLabors.Shapes.Tests.PolygonClipper
         [Fact]
         public void NonOverlapping()
         {
-            var shapes = this.Clip(this.TopLeft, this.TopRight);
+            var shapes = this.Clip(this.TopLeft, this.TopRight)
+                .OfType<Polygon>().Select(x => (RectangularPolygon)x);
+
             Assert.Equal(1, shapes.Count());
             Assert.Contains(this.TopLeft, shapes);
+
             Assert.DoesNotContain(this.TopRight, shapes);
         }
 
@@ -76,6 +98,7 @@ namespace SixLabors.Shapes.Tests.PolygonClipper
         public void OverLappingReturns1NewShape()
         {
             var shapes = this.Clip(this.BigSquare, this.TopLeft);
+
             Assert.Equal(1, shapes.Count());
             Assert.DoesNotContain(this.BigSquare, shapes);
             Assert.DoesNotContain(this.TopLeft, shapes);
@@ -84,7 +107,9 @@ namespace SixLabors.Shapes.Tests.PolygonClipper
         [Fact]
         public void OverlappingButNotCrossingRetuensOrigionalShapes()
         {
-            var shapes = this.Clip(this.BigSquare, this.Hole);
+            var shapes = this.Clip(this.BigSquare, this.Hole)
+                .OfType<Polygon>().Select(x => (RectangularPolygon)x);
+
             Assert.Equal(2, shapes.Count());
             Assert.Contains(this.BigSquare, shapes);
             Assert.Contains(this.Hole, shapes);
@@ -102,7 +127,7 @@ namespace SixLabors.Shapes.Tests.PolygonClipper
         [Fact]
         public void ClippingRectanglesCreateCorrectNumberOfPoints()
         {
-            IEnumerable<ISimplePath> paths = new RectangularePolygon(10, 10, 40, 40).Clip(new RectangularePolygon(20, 0, 20, 20)).Flatten();
+            IEnumerable<ISimplePath> paths = new RectangularPolygon(10, 10, 40, 40).Clip(new RectangularPolygon(20, 0, 20, 20)).Flatten();
             Assert.Equal(1, paths.Count());
             var points = paths.First().Points;
 
