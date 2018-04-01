@@ -7,6 +7,8 @@
     <OutputType>Exe</OutputType>
     <PackageId>DrawShapesWithImageSharp</PackageId>
     <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>2018.4.1.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
