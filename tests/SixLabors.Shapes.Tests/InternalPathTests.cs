@@ -149,7 +149,7 @@ namespace SixLabors.Shapes.Tests
         public void PointOnPath(float distance, float expectedX, float expectedY, float expectedAngle)
         {
             InternalPath shape = Create(new PointF(50, 50), new Size(200, 60));
-            var point = shape.PointAlongPath(distance);
+            SegmentInfo point = shape.PointAlongPath(distance);
             Assert.Equal(expectedX, point.Point.X, 4);
             Assert.Equal(expectedY, point.Point.Y, 4);
             Assert.Equal(expectedAngle, point.Angle, 4);
@@ -179,7 +179,7 @@ namespace SixLabors.Shapes.Tests
         {
             InternalPath shape = Create(new PointF(0, 0), new Size(10, 10));
             PointF[] buffer = new PointF[shape.PointCount];
-            int hits = shape.FindIntersections(new PointF(5, -10), new PointF(5, 20), buffer, 0);
+            int hits = shape.FindIntersections(new PointF(5, -10), new PointF(5, 20), buffer);
 
             Assert.Equal(2, hits);
             Assert.Equal(new PointF(5, 0), buffer[0]);
@@ -215,7 +215,7 @@ namespace SixLabors.Shapes.Tests
 
             PointF[] buffer = shape.FindIntersections(new PointF(0, 10), new PointF(10, 0)).ToArray();
 
-            Assert.Equal(1, buffer.Length);
+            Assert.Single(buffer);
             Assert.Equal(new PointF(5, 5), buffer[0]);
         }
 
@@ -226,7 +226,7 @@ namespace SixLabors.Shapes.Tests
 
             PointF[] buffer = shape.FindIntersections(new PointF(0, 10), new PointF(10, 0)).ToArray();
 
-            Assert.Equal(0, buffer.Length);
+            Assert.Empty(buffer);
         }
         [Fact]
         public void Intersections_Diagonal_and_straight_Hit()
@@ -235,7 +235,7 @@ namespace SixLabors.Shapes.Tests
 
             PointF[] buffer = shape.FindIntersections(new PointF(3, 10), new PointF(3, 0)).ToArray();
 
-            Assert.Equal(1, buffer.Length);
+            Assert.Single(buffer);
             Assert.Equal(new PointF(3, 3), buffer[0]);
         }
         [Fact]
@@ -245,7 +245,7 @@ namespace SixLabors.Shapes.Tests
 
             PointF[] buffer = shape.FindIntersections(new PointF(3, 10), new PointF(3, 3.5f)).ToArray();
 
-            Assert.Equal(0, buffer.Length);
+            Assert.Empty(buffer);
         }
     }
 }

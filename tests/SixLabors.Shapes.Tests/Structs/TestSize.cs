@@ -7,6 +7,7 @@ using Xunit.Abstractions;
 
 namespace SixLabors.Shapes.Tests
 {
+    [Serializable]
     public class TestSize : IXunitSerializable
     {
         public TestSize() { }
@@ -28,8 +29,8 @@ namespace SixLabors.Shapes.Tests
 
         public void Serialize(IXunitSerializationInfo info)
         {
-            info.AddValue("width", Width);
-            info.AddValue("height", Height);
+            info.AddValue("width", this.Width);
+            info.AddValue("height", this.Height);
         }
 
         public static implicit operator SizeF(TestSize p)
@@ -42,7 +43,7 @@ namespace SixLabors.Shapes.Tests
         }
         public override string ToString()
         {
-            return $"{Width}x{Height}";
+            return $"{this.Width}x{this.Height}";
         }
     }
 }
