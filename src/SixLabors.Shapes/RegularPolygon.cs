@@ -67,16 +67,16 @@ namespace SixLabors.Shapes
 
             PointF distanceVector = new PointF(0, radius);
 
-            float anglePerSegemnts = (float)((2 * Math.PI) / verticies);
+            float anglePerSegments = (float)((2 * Math.PI) / verticies);
             float current = angle;
-            PointF[] points = new PointF[verticies];
+            var points = new PointF[verticies];
             for (int i = 0; i < verticies; i++)
             {
                 PointF rotated = PointF.Transform(distanceVector, Matrix3x2.CreateRotation(current));
 
                 points[i] = rotated + location;
 
-                current += anglePerSegemnts;
+                current += anglePerSegments;
             }
 
             return new LinearLineSegment(points);

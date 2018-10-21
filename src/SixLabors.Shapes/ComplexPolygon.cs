@@ -12,7 +12,7 @@ namespace SixLabors.Shapes
     /// <summary>
     /// Represents a complex polygon made up of one or more shapes overlayed on each other, where overlaps causes holes.
     /// </summary>
-    /// <seealso cref="SixLabors.Shapes.IPath" />
+    /// <seealso cref="IPath" />
     public sealed class ComplexPolygon : IPath
     {
         private readonly IPath[] paths;
@@ -21,8 +21,8 @@ namespace SixLabors.Shapes
         /// Initializes a new instance of the <see cref="ComplexPolygon" /> class.
         /// </summary>
         /// <param name="paths">The paths.</param>
-        public ComplexPolygon(params IPath[] paths)
-            : this((IEnumerable<IPath>)paths)
+        public ComplexPolygon(IEnumerable<IPath> paths)
+            : this(paths?.ToArray())
         {
         }
 
@@ -30,9 +30,9 @@ namespace SixLabors.Shapes
         /// Initializes a new instance of the <see cref="ComplexPolygon" /> class.
         /// </summary>
         /// <param name="paths">The paths.</param>
-        public ComplexPolygon(IEnumerable<IPath> paths)
+        public ComplexPolygon(params IPath[] paths)
         {
-            this.paths = paths.ToArray();
+            this.paths = paths ?? throw new ArgumentNullException(nameof(paths));
 
             float minX = float.MaxValue;
             float maxX = float.MinValue;
@@ -122,7 +122,7 @@ namespace SixLabors.Shapes
         public PointInfo Distance(PointF point)
         {
             float dist = float.MaxValue;
-            PointInfo pointInfo = default(PointInfo);
+            PointInfo pointInfo = default;
             bool inside = false;
             foreach (IPath shape in this.Paths)
             {
@@ -219,7 +219,7 @@ namespace SixLabors.Shapes
                 return this;
             }
 
-            IPath[] shapes = new IPath[this.paths.Length];
+            var shapes = new IPath[this.paths.Length];
             int i = 0;
             foreach (IPath s in this.Paths)
             {
@@ -237,7 +237,7 @@ namespace SixLabors.Shapes
         /// </returns>
         public IEnumerable<ISimplePath> Flatten()
         {
-            List<ISimplePath> paths = new List<ISimplePath>();
+            var paths = new List<ISimplePath>();
             foreach (IPath path in this.Paths)
             {
                 paths.AddRange(path.Flatten());
@@ -260,7 +260,7 @@ namespace SixLabors.Shapes
             }
             else
             {
-                IPath[] paths = new IPath[this.paths.Length];
+                var paths = new IPath[this.paths.Length];
                 for (int i = 0; i < this.paths.Length; i++)
                 {
                     paths[i] = this.paths[i].AsClosedPath();
