@@ -33,8 +33,8 @@
     </ItemGroup>
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\..\SixLabors.Shapes.ruleset</CodeAnalysisRuleSet>
-        <AssemblyVersion>0.1.0.8</AssemblyVersion>
-        <FileVersion>2018.12.13.8</FileVersion>
+        <AssemblyVersion>0.1.0.11</AssemblyVersion>
+        <FileVersion>2018.12.26.11</FileVersion>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>BotasCore.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
@@ -48,7 +48,7 @@
     </ItemGroup>
     <ItemGroup>
       <Reference Include="SixLabors.Core">
-        <HintPath>..\..\..\Core\src\SixLabors.Core\bin\Debug\netstandard2.0\SixLabors.Core.dll</HintPath>
+        <HintPath>..\..\..\Core\src\SixLabors.Core\bin\Release\netstandard2.0\SixLabors.Core.dll</HintPath>
       </Reference>
     </ItemGroup>
 </Project>

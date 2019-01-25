@@ -21,8 +21,10 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/SixLabors/Shapes</RepositoryUrl>
         <DebugType Condition="$(codecov) == 'true'">full</DebugType>
-        <AssemblyVersion>0.1.0.3</AssemblyVersion>
-        <FileVersion>2018.12.13.3</FileVersion>
+        <AssemblyVersion>0.1.0.9</AssemblyVersion>
+        <FileVersion>2018.12.26.9</FileVersion>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>BotasCore.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -45,10 +47,10 @@
 
   <ItemGroup>
     <Reference Include="SixLabors.Core">
-      <HintPath>..\..\..\Fonts\src\SixLabors.Fonts\bin\Debug\netstandard2.0\SixLabors.Core.dll</HintPath>
+      <HintPath>..\..\..\Core\src\SixLabors.Core\bin\Release\netstandard2.0\SixLabors.Core.dll</HintPath>
     </Reference>
     <Reference Include="SixLabors.Fonts">
-      <HintPath>..\..\..\Fonts\src\SixLabors.Fonts\bin\Debug\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+      <HintPath>..\..\..\Fonts\src\SixLabors.Fonts\bin\Release\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
   </ItemGroup>
 
